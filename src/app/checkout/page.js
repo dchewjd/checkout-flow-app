@@ -15,6 +15,7 @@ export default function CheckoutPage() {
     lastName: '',
     email: '',
     phone: '',
+    countryCode: '',
     addressLine1: '',
     addressLine2: '',
     city: '',
@@ -219,18 +220,27 @@ export default function CheckoutPage() {
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Phone Number
                 </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={billingInfo.phone}
-                  onChange={handleBillingChange}
-                  placeholder="e.g., +65 1234 5678"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
-                />
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    name="countryCode"
+                    value={billingInfo.countryCode}
+                    onChange={handleBillingChange}
+                    placeholder="+65"
+                    className="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
+                  />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={billingInfo.phone}
+                    onChange={handleBillingChange}
+                    placeholder="12345678"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
+                  />
+                </div>
               </div>
               <div className="md:col-span-2">
                 <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700 mb-1">

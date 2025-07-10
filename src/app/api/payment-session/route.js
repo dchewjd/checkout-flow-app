@@ -15,26 +15,26 @@ export async function POST(request) {
       amount: amount,
       currency: currency,
       reference: `order-${Date.now()}`,
+      description: 'Premium Running Shoes',
       billing: {
         address: {
-          address_line1: billingInfo?.addressLine1 && billingInfo.addressLine1.trim() !== '' 
-            ? billingInfo.addressLine1.length < 5 
-              ? `${billingInfo.addressLine1} Street` 
-              : billingInfo.addressLine1
-            : '123 Main Street',
+          ...(billingInfo?.addressLine1 && billingInfo.addressLine1.trim() !== '' && { address_line1: billingInfo.addressLine1 }),
           ...(billingInfo?.addressLine2 && billingInfo.addressLine2.trim() !== '' && { address_line2: billingInfo.addressLine2 }),
-          city: billingInfo?.city || 'Singapore',
-          state: billingInfo?.state || '',
-          zip: billingInfo?.zip || '123456',
-          country: billingInfo?.country || 'SG'
-        }
+          ...(billingInfo?.city && { city: billingInfo.city }),
+          ...(billingInfo?.state && { state: billingInfo.state }),
+          ...(billingInfo?.zip && { zip: billingInfo.zip }),
+          ...(billingInfo?.country && { country: billingInfo.country })
+        },
+        ...(billingInfo?.phone && billingInfo.phone.trim() !== '' && billingInfo?.countryCode && { 
+          phone: {
+            country_code: billingInfo.countryCode,
+            number: billingInfo.phone
+          }
+        })
       },
       customer: {
-        email: billingInfo?.email || 'customer@example.com',
-        name: billingInfo?.firstName && billingInfo?.lastName 
-          ? `${billingInfo.firstName} ${billingInfo.lastName}` 
-          : 'Customer',
-        ...(billingInfo?.phone && billingInfo.phone.trim() !== '' && { phone: billingInfo.phone })
+        ...(billingInfo?.email && { email: billingInfo.email }),
+        ...(billingInfo?.firstName && billingInfo?.lastName && { name: `${billingInfo.firstName} ${billingInfo.lastName}` })
       },
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
       failure_url: `${process.env.NEXT_PUBLIC_BASE_URL}/failure`,
